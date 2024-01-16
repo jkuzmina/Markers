@@ -1,0 +1,77 @@
+package ru.netology.markers
+
+import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.yandex.mapkit.Animation
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.ScreenPoint
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.IconStyle
+import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.AnimatedImageProvider
+import com.yandex.runtime.ui_view.ViewProvider
+
+
+class MainActivity : AppCompatActivity() {
+    lateinit var mapView: MapView
+    private var mapObjects: MapObjectCollection? = null
+
+    private val inputListener: InputListener = object : InputListener {
+        /*fun onMapTap(map: Map<*, *>, point: Point) {}
+        fun onMapLongTap(map: Map<*, *>, point: Point) {
+            val provider = AnimatedImageProvider.fromAsset(applicationContext, "animation.png")
+            val iconStyle = IconStyle().setScale(4f)
+            mapObjects?.addPlacemark(point, provider, iconStyle)
+        }*/
+
+        override fun onMapTap(p0: com.yandex.mapkit.map.Map, p1: Point) {
+            val markerView = View(applicationContext).apply {
+                background = getDrawable(R.drawable.ic_baseline_location_on_48)
+            }
+            mapObjects?.addPlacemark(p1, ViewProvider(markerView))
+        }
+        override fun onMapLongTap(p0: com.yandex.mapkit.map.Map, p1: Point) {
+        }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MapKitFactory.setApiKey("6f10d99a-982c-4f55-a88c-8aaa46b642f4")
+        MapKitFactory.initialize(this)
+        setContentView(R.layout.activity_main)
+        mapView = findViewById(R.id.mapview)
+        mapView.getMap().move(
+            CameraPosition(Point(55.751574, 37.573856), 15.0f, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 0f),
+            null)
+        mapObjects = mapView.getMap().getMapObjects();
+
+        mapView.map.addInputListener(inputListener);
+        /*mapView.map.addInputListener(object : InputListener {
+            override fun onMapTap(p0: com.yandex.mapkit.map.Map, p1: Point) {
+                Log.d("MAP_TAG", "point: " + p1.latitude + ", " + p1.longitude)
+            }
+
+            override fun onMapLongTap(p0: com.yandex.mapkit.map.Map, p1: Point) {
+            }
+        })*/
+
+    }
+
+    override fun onStop() {
+        mapView.onStop()
+        MapKitFactory.getInstance().onStop()
+        super.onStop()
+    }
+
+    override fun onStart() {
+        mapView.onStart()
+        MapKitFactory.getInstance().onStart()
+        super.onStart()
+    }
+}

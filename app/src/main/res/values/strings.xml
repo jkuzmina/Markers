@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Markers</string>
+    <string name="description">Description for (%1$.2f, %2$.2f)</string>
+    <string name="coordinates" translatable="false">(%1$.2f, %2$.2f)</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="menu_remove">Remove</string>
+    <string name="menu_edit">Edit</string>
+    <string name="to_marker_s_list">To marker\'s list</string>
+    <string name="zoom_out">Zoom out</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="my_location">My location</string>
+</resources>
